@@ -47,7 +47,27 @@ class Guest extends React.Component {
        this.enterTagsFromResults = this.enterTagsFromResults.bind(this);
        this.deleteTags = this.deleteTags.bind(this);
        this.insertTagsOnEnter = this.insertTagsOnEnter.bind(this);
+       this.seperateTags = this.seperateTags.bind(this);
    }
+
+
+   seperateTags(event) {
+       if(event.charCode === 44){
+           event.preventDefault();
+           let current_tags = this.state.tags;
+           let value = this.state.query;
+           let guests = this.state.guests.map(val => val.toLowerCase());
+           if(current_tags.indexOf(value.toLowerCase()) <0 && guests.indexOf(value.toLowerCase()) > -1){
+               current_tags.push(value);
+               this.setState({
+                   tags: current_tags,
+                   query: ''
+               })
+           }
+       }
+   }
+
+   
 
    insertTagsOnEnter(event) {
        event.preventDefault();
@@ -89,7 +109,7 @@ class Guest extends React.Component {
        })
    }
 
-   handleChange(event) {
+   handleChange(event) {  
      let current_query = event.target.value;
      let results = this.state.guests.filter(item => item.toLowerCase().indexOf(current_query.toLowerCase()) > -1);
      this.setState({
@@ -107,6 +127,7 @@ class Guest extends React.Component {
             <input type="search"
             value = {this.state.query}
             onChange={this.handleChange}
+            onKeyPress={this.seperateTags}
             className="form-control"/>
             {this.state.search_results.length > 0 && <SearchResults result={this.state.search_results} onclick={this.enterTagsFromResults}/>}
             </div>
