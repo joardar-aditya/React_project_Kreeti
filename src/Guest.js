@@ -1,26 +1,38 @@
 import React from 'react';
+import './Guest.css';
 
-const ListOfResults= (props) => {
+const Tags = (props) => {
+    const options = props.result.map((r,i) => (
+        <span className="mx-2 p-2 bg-dark text-light" key={i}>
+            <span className="mx-2">{r}</span> 
+            <span onClick={() => props.delete(r)} className="mx-2 bg-light text-dark px-2">X</span>
+        </span>
+    ));
+    return <div className="my-2">
+        
+        {options}</div>
+}
+
+const ListOfGuests= (props) => {
     const options = props.result.map((r,i) => (
         <li key={i}>
             {r}
         </li>
     ));
-    return <ul>{options}</ul>
+    return <div className="my-2">
+        <h2>List of Guests</h2>
+        <ul>{options}</ul></div>
 }
 
 const SearchResults = (props) =>{
     const options = props.result.map((r,i) => (
-        <li key={i}>
+        <div className="SearchItems" onClick={() => props.onclick(r)}  key={i}>
             {r}
-        </li>
+        </div>
     ));
-    return <div>
-        <h3>Search Suggestions</h3>
-        <ul>
+    return <div className="container">
             {options}
-        </ul>
-    </div>
+        </div>
 }
 class Guest extends React.Component {
    constructor(props){
@@ -32,8 +44,50 @@ class Guest extends React.Component {
         tags: []
        }
        this.handleChange = this.handleChange.bind(this);
+       this.enterTagsFromResults = this.enterTagsFromResults.bind(this);
+       this.deleteTags = this.deleteTags.bind(this);
+       this.insertTagsOnEnter = this.insertTagsOnEnter.bind(this);
    }
 
+   insertTagsOnEnter(event) {
+       event.preventDefault();
+        if(this.state.search_results.length > 0){
+            let current_tags = this.state.tags;
+            console.log("i was called");
+            if(current_tags.indexOf(this.state.search_results[0])){
+             current_tags.push(this.state.search_results[0]);
+             this.setState({
+                tags: current_tags,
+                query: ''
+             })
+        }}else{
+            this.setState({});
+        }
+    }
+   
+   
+   enterTagsFromResults(value) {
+       let current_tags = this.state.tags;
+       let index = current_tags.indexOf(value)
+       if(index < 0){
+       current_tags.push(value)    
+       this.setState(
+           {
+               tags: current_tags
+           }
+       )}
+   }
+
+   deleteTags(value){
+       let current_tags = this.state.tags;
+       let value_index = current_tags.indexOf(value);
+       if(value_index > -1){
+           current_tags.splice(value_index, 1);
+       }
+       this.setState({
+           tags: current_tags
+       })
+   }
 
    handleChange(event) {
      let current_query = event.target.value;
@@ -47,18 +101,19 @@ class Guest extends React.Component {
    render(){
        return (
         <div className= "Guest container text-left">
-            <form>
+            <form onSubmit={this.insertTagsOnEnter}>
             <div className="form-group">
-            <label for="search">Search for Guest List</label>
+            <label>Search for Guest List</label>
             <input type="search"
-            value = {this.state.query} 
+            value = {this.state.query}
             onChange={this.handleChange}
             className="form-control"/>
+            {this.state.search_results.length > 0 && <SearchResults result={this.state.search_results} onclick={this.enterTagsFromResults}/>}
             </div>
             </form>
             <div>
-              {this.state.search_results.length > 0 && <SearchResults result={this.state.search_results}/>}
-              <ListOfResults result={this.state.guests} />
+             {this.state.tags.length > 0 && <Tags result={this.state.tags} delete={this.deleteTags}/>}
+              <ListOfGuests result={this.state.guests} />
             </div>
         </div>
        );
