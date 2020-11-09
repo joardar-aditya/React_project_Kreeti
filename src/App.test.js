@@ -1,9 +1,9 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, getByPlaceholderText, render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom'
 import App from './App';
 
-test('renders learn react link', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+it('renders Search lable', () => {
+  render(<App />);
+  expect(screen.getByText('Search for Guest List')).toBeInTheDocument();
 });
