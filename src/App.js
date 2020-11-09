@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Guest from './Guest';
+import ReactDOMServer, { renderToString } from 'react-dom/server';
 
 function App() {
   return (
@@ -12,3 +13,5 @@ function App() {
 }
 
 export default App;
+
+renderToString(<App />);

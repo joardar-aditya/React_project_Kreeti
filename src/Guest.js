@@ -1,44 +1,14 @@
 import React from 'react';
 import './Guest.css';
+import ListOfGuests from './Guest_view/ListOfGuests'
+import SearchResults from './Guest_view/SearchResults'
+import Tags from './Guest_view/Tags'
 
-const Tags = (props) => {
-    const options = props.result.map((r,i) => (
-        <span className="mx-2 p-2 bg-dark text-light" key={i}>
-            <span className="mx-2">{r}</span> 
-            <span onClick={() => props.delete(r)} className="mx-2 bg-light text-dark px-2">X</span>
-        </span>
-    ));
-    return <div className="my-2">
-        
-        {options}</div>
-}
-
-const ListOfGuests= (props) => {
-    const options = props.result.map((r,i) => (
-        <li key={i}>
-            {r}
-        </li>
-    ));
-    return <div className="my-2">
-        <h2>List of Guests</h2>
-        <ul>{options}</ul></div>
-}
-
-const SearchResults = (props) =>{
-    const options = props.result.map((r,i) => (
-        <div className="SearchItems" onClick={() => props.onclick(r)}  key={i}>
-            {r}
-        </div>
-    ));
-    return <div className="container">
-            {options}
-        </div>
-}
 class Guest extends React.Component {
    constructor(props){
        super(props);
        this.state = {
-        guests : ["Aditya", "Abhay", "Rahul", "Devesh", "Karan"],
+        guests : ['Aditya', 'Abhay', 'Rahul', 'Devesh', 'Karan'],
         search_results: [],
         query: '',
         tags: []
@@ -52,18 +22,24 @@ class Guest extends React.Component {
 
 
    seperateTags(event) {
-       if(event.charCode === 44){
-           event.preventDefault();
-           let current_tags = this.state.tags;
-           let value = this.state.query;
-           let guests = this.state.guests.map(val => val.toLowerCase());
-           if(current_tags.indexOf(value.toLowerCase()) <0 && guests.indexOf(value.toLowerCase()) > -1){
-               current_tags.push(value);
-               this.setState({
-                   tags: current_tags,
-                   query: ''
-               })
-           }
+      if(event.charCode === 44){
+          event.preventDefault();
+          let current_tags = this.state.tags.map(val => val.toLowerCase());
+          let value = this.state.query.toLowerCase();
+          let guests = this.state.guests.map(val => val.toLowerCase());
+          if ( current_tags.indexOf(value) < 0 && guests.indexOf(value) > -1 ) {
+            current_tags = [...current_tags, value]
+            let new_list = current_tags.map((val) => {
+              return val[0].toUpperCase() + val.substring(1).toLowerCase()
+            })
+            this.setState({
+                  tags: new_list,
+                  query: '',
+                  search_results: []
+            })
+          }else{
+             alert('Guest Tag already available');
+          }
        }
    }
 
@@ -73,13 +49,18 @@ class Guest extends React.Component {
        event.preventDefault();
         if(this.state.search_results.length > 0){
             let current_tags = this.state.tags;
-            console.log("i was called");
-            if(current_tags.indexOf(this.state.search_results[0])){
+            if(current_tags.indexOf(this.state.search_results[0]) < 0){
              current_tags.push(this.state.search_results[0]);
              this.setState({
                 tags: current_tags,
-                query: ''
+                query: '',
+                search_results: []
              })
+        }else {
+          this.setState({
+            query:'',
+            search_results: []
+          })
         }}else{
             this.setState({});
         }
@@ -93,9 +74,16 @@ class Guest extends React.Component {
        current_tags.push(value)    
        this.setState(
            {
-               tags: current_tags
+            tags: current_tags,
+            search_results: []
            }
-       )}
+       )}else{
+         alert('Guest name already')
+         this.setState({
+           search_results: [],
+           query: ''
+         })
+       }
    }
 
    deleteTags(value){
@@ -111,11 +99,17 @@ class Guest extends React.Component {
 
    handleChange(event) {  
      let current_query = event.target.value;
-     let results = this.state.guests.filter(item => item.toLowerCase().indexOf(current_query.toLowerCase()) > -1);
-     this.setState({
-         search_results : results,
-         query: current_query
-     })   
+     if(current_query.length > 0){
+      let results = this.state.guests.filter(item => item.toLowerCase().indexOf(current_query.toLowerCase()) > -1);
+      this.setState({
+        search_results : results,
+        query: current_query
+     })}else{
+        this.setState({
+          search_results: [],
+          query: ''
+       })
+     }
    }
 
    render(){
@@ -125,6 +119,7 @@ class Guest extends React.Component {
             <div className="form-group">
             <label>Search for Guest List</label>
             <input type="search"
+            placeholder="Enter guest's name"
             value = {this.state.query}
             onChange={this.handleChange}
             onKeyPress={this.seperateTags}
@@ -133,7 +128,7 @@ class Guest extends React.Component {
             </div>
             </form>
             <div>
-             {this.state.tags.length > 0 && <Tags result={this.state.tags} delete={this.deleteTags}/>}
+             {this.state.tags.length > 0 && <Tags result={this.state.tags} removeTag={this.deleteTags}/>}
               <ListOfGuests result={this.state.guests} />
             </div>
         </div>
