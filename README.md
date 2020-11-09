@@ -1,3 +1,9 @@
 ## React Project
 
-initialization -: npm/yarn start
+initialization -: npm install/yarn
+
+starting the application -: npm run start/ yarn start
+
+Testing -: npm run test/ yarn test
+
+Linting -: npm run lint/ yarn lint

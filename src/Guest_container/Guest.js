@@ -1,5 +1,5 @@
 import React from 'react';
-import './Guest.css';
+import '../Guest.css';
 import ListOfGuests from '../Guest_view/ListOfGuests'
 import SearchResults from '../Guest_view/SearchResults'
 import Tags from '../Guest_view/Tags'
@@ -50,9 +50,8 @@ class Guest extends React.Component {
         if(this.state.search_results.length > 0){
             let current_tags = this.state.tags;
             if(current_tags.indexOf(this.state.search_results[0]) < 0){
-             current_tags.push(this.state.search_results[0]);
              this.setState({
-                tags: current_tags,
+                tags: [...current_tags, this.state.search_results[0]],
                 query: '',
                 search_results: []
              })
@@ -71,14 +70,13 @@ class Guest extends React.Component {
        let current_tags = this.state.tags;
        let index = current_tags.indexOf(value)
        if(index < 0){
-       current_tags.push(value)    
        this.setState(
            {
-            tags: current_tags,
+            tags: [...current_tags, value],
             search_results: []
            }
        )}else{
-         alert('Guest name already')
+         alert('Guest name already present')
          this.setState({
            search_results: [],
            query: ''
