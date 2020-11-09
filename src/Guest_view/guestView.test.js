@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import ListOfGuests from './ListOfGuests'
 import SearchResults from './SearchResults'
 import Tags from './Tags'
-import Guest from '../Guest';
+import Guest from '../Guest_container/Guest';
 
 it('enters Guest in tag list on Enter', () => {
   render(<Guest />);

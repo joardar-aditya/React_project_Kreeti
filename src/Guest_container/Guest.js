@@ -1,23 +1,23 @@
 import React from 'react';
 import './Guest.css';
-import ListOfGuests from './Guest_view/ListOfGuests'
-import SearchResults from './Guest_view/SearchResults'
-import Tags from './Guest_view/Tags'
+import ListOfGuests from '../Guest_view/ListOfGuests'
+import SearchResults from '../Guest_view/SearchResults'
+import Tags from '../Guest_view/Tags'
 
 class Guest extends React.Component {
    constructor(props){
-       super(props);
-       this.state = {
+      super(props);
+      this.state = {
         guests : ['Aditya', 'Abhay', 'Rahul', 'Devesh', 'Karan'],
         search_results: [],
         query: '',
         tags: []
-       }
-       this.handleChange = this.handleChange.bind(this);
-       this.enterTagsFromResults = this.enterTagsFromResults.bind(this);
-       this.deleteTags = this.deleteTags.bind(this);
-       this.insertTagsOnEnter = this.insertTagsOnEnter.bind(this);
-       this.seperateTags = this.seperateTags.bind(this);
+      }
+      this.handleChange = this.handleChange.bind(this);
+      this.enterTagsFromResults = this.enterTagsFromResults.bind(this);
+      this.deleteTags = this.deleteTags.bind(this);
+      this.insertTagsOnEnter = this.insertTagsOnEnter.bind(this);
+      this.seperateTags = this.seperateTags.bind(this);
    }
 
 
