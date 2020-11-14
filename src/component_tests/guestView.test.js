@@ -1,9 +1,9 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import ListOfGuests from './ListOfGuests'
-import SearchResults from './SearchResults'
-import Tags from './Tags'
-import Guest from '../Guest_container/Guest';
+import ListOfGuests from '../Component/ListOfGuests'
+import SearchResults from '../Component/SearchResults'
+import Tags from '../Component/Tags'
+import Guest from '../Container/Guest';
 
 it('enters Guest in tag list on Enter', () => {
   render(<Guest />);

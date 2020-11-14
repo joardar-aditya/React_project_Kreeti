@@ -1,8 +1,8 @@
 import React from 'react';
 import '../Guest.css';
-import ListOfGuests from '../Guest_view/ListOfGuests'
-import SearchResults from '../Guest_view/SearchResults'
-import Tags from '../Guest_view/Tags'
+import ListOfGuests from '../Component/ListOfGuests'
+import SearchResults from '../Component/SearchResults'
+import Tags from '../Component/Tags'
 
 class Guest extends React.Component {
    constructor(props){

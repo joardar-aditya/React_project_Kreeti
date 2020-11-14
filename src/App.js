@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Guest from './Guest_container/Guest';
+import Guest from './Container/Guest';
 import ReactDOMServer, { renderToString } from 'react-dom/server';
 
 function App() {
